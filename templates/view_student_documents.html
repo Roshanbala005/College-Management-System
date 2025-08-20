@@ -1,0 +1,56 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2>Documents for {{ student.username }}</h2>
+        {% if student.userprofile.roll_number %}
+            <p>Roll Number: {{ student.userprofile.roll_number }}</p>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary mb-3">Back to Dashboard</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Uploaded Documents</h5>
+            </div>
+            <div class="card-body">
+                {% if documents %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Uploaded Date</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for doc in documents %}
+                                <tr>
+                                    <td>{{ doc.category.name }}</td>
+                                    <td>{{ doc.uploaded_at|date:"M d, Y H:i" }}</td>
+                                    <td>{{ doc.notes|default:"-" }}</td>
+                                    <td>
+                                        <a href="{% url 'download_document' doc.id %}" class="btn btn-sm btn-outline-primary">Download</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <p class="mb-0">No documents uploaded yet.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
